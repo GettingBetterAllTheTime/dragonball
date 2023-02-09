@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="no" />
+    <meta name="apple-mobile-app-capable" content="no" />
+    <!-- 상단 주소창 제거 -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        $(function () {
+            $(".percent").width(0);
+            let wd = 0;
+            let second = 10;
+            let score = 0;
+            let dsecond = second;
+            let randomtimer;
+            let counter;
+            let num = 0; // 개체 이름 구분변수( 랜덤 )
+            let clickable = false; // 연속 클릭 방지 상태변수
+
+            function randomBall() {
+                let numAr = new Array();
+                let num = 0;
+                $(".play_area").children().off("click");
+                for (let i = 0; i < 10; i++) {
+                    num = Math.floor(Math.random() * 11);
+                    if (numAr.indexOf(num) === -1) {
+                        numAr.push(num);
+                        $(".play_area")
+                            .children(".c" + i)
+                            .children(".random")
+                            .css("background-image", 'url("img/j' + num + '.png")')
+                            .css("top", "0px")
+                            .removeClass("up");
+                    } else {
+                        i--;
+                    }
+                }
+                let num1 = Math.floor(Math.random() * 8);
+                let num2 = Math.floor(Math.random() * 7);
+                $(".play_area")
+                    .children(".c" + num1)
+                    .children(".random")
+                    .css("background-image", 'url("img/i' + num2 + '.png")');
+                //0~8사이 랜덤변수로 교체될 div순서 지정후
+                //0~6까지의 랜덤변수로 배경이미지 경로 변경
+
+                setTimeout(function () {
+                    $(".play_area").find(".random").addClass("up");
+                }, 5);
+
+                $(".play_area")
+                    .children(".c" + num1)
+                    .on("click", function () {
+                        wd = wd + 14;
+                        $(".percent").css("width", wd + "%");
+                        if (wd >= 87) {
+                            console.log("99");
+                            setTimeout(function () {
+                                clearInterval(counter);
+                                clearInterval(randomtimer);
+                                $(".play").hide();
+                                $(".success").show();
+                            }, 300);
+                        }
+                    });
+            }
+            randomtimer = setInterval(randomBall, 1000);
+            $(document).on("touchstart", function () { });
+            $("html,body").animate({ scrollTop: "5px" }, 200);
+            function countdown() {
+                second--;
+                console.log(second);
+                if (second < 4) {
+                    document.getElementsByClassName('timeLeft')[0].style.color = 'red';
+                }
+                $(".timeLeft").text(second);
+                if (second == 0) {
+                    setTimeout(function () {
+                        clearInterval(counter);
+                        clearInterval(randomtimer);
+                        if (wd < 87) {
+                            $(".play").hide();
+                            $(".fail").show();
+                        }
+                    }, 100);
+                }
+            }
+            counter = setInterval(countdown, 1000);
+            $(".exit").on("click", function () {
+                window.location.href = "index.html";
+            });
+            $(".replay").on("click", function () {
+                window.location.reload();
+            });
+        });
+    </script>
+    <title>Document</title>
+
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+        html,
+        body {
+            width: 100%;
+            height: 100vh;
+        }
+
+        body,
+        section,
+        div,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-size: 23px;
+            font-weight: bold;
+            text-align: center;
+            font-family: 'Noto Sans KR', sans-serif;
+            overscroll-behavior: contain;
+        }
+
+        .get,
+        .time {
+            width: 90%;
+            max-width: 330px;
+            border-radius: 10px;
+            background: #000;
+            color: #fff;
+            margin: 15px auto;
+        }
+
+        .get {
+            background: #000 url("img/stars_off.png") no-repeat center bottom 7px;
+            height: 90px;
+            position: relative;
+        }
+
+        .get>p {
+            padding: 5px 0;
+        }
+
+        .percent {
+            width: 317px;
+            height: 40px;
+            position: absolute;
+            bottom: 7px;
+            left: 4px;
+            background: url("img/stars_on.png") no-repeat left center;
+        }
+
+        .time {
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .time>.timeLeft {
+            color: #fff300;
+        }
+
+        .play_area {
+            width: 90%;
+            max-width: 330px;
+            margin: 100px auto;
+            height: 300px;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-around;
+            align-content: space-around;
+        }
+
+        .play_area>div {
+            width: 90px;
+            height: 83px;
+            background: url("img/cloud.png") no-repeat center bottom;
+        }
+
+        .play_area .random {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            left: 14px;
+            top: 40px;
+            /* background: url("img/i0.png") no-repeat; */
+            z-index: -1;
+        }
+
+        .play_area .up {
+            animation-duration: 0.3s;
+            animation-name: showup;
+            animation-iteration-count: 1;
+            animation-fill-mode: both;
+        }
+
+        @keyframes showup {
+            0% {
+                top: 40px;
+            }
+
+            100% {
+                top: 0px;
+            }
+        }
+
+        .success,
+        .fail {
+            width: 300px;
+            height: 200px;
+            background-size: 300px 149px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .success {
+            background: url("img/success.png") no-repeat center 20px;
+        }
+
+        .fail {
+            background: url("img/fail.png") no-repeat center 20px;
+        }
+
+        .success>.replay,
+        .success>.exit,
+        .fail>.replay,
+        .fail>.exit {
+            width: 140px;
+            height: 50px;
+            position: absolute;
+            top: 200px;
+        }
+
+        .success>.replay,
+        .fail>.replay {
+            background: url("img/replay.png") no-repeat;
+            right: 0;
+        }
+
+        .success>.exit,
+        .fail>.exit {
+            background: url("img/exit.png") no-repeat;
+            left: 0;
+        }
+
+        .success>p,
+        .fail>p {
+            width: 300px;
+            height: 50px;
+            font-size: 40px;
+            margin-top: -40px;
+            color: #f90000;
+            text-shadow: 2px 2px rgba(0, 0, 0, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="play">
+        <div class="get">
+            <p>획득한 드래곤볼</p>
+            <div class="percent"></div>
+        </div>
+        <div class="time">
+            <span>남은 시간</span>
+            <span class="timeLeft"></span>
+        </div>
+        <div class="play_area">
+            <div class="c0">
+                <div class="random">
+                </div>
+            </div>
+            <div class="c1">
+                <div class="random"></div>
+            </div>
+            <div class="c2">
+                <div class="random"></div>
+            </div>
+            <div class="c3">
+                <div class="random"></div>
+            </div>
+            <div class="c4">
+                <div class="random"></div>
+            </div>
+            <div class="c5">
+                <div class="random"></div>
+            </div>
+            <div class="c6">
+                <div class="random"></div>
+            </div>
+            <div class="c7">
+                <div class="random"></div>
+            </div>
+            <div class="c8">
+                <div class="random"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="success">
+        <p>SUCCESS</p>
+        <div class="exit"></div>
+        <div class="replay"></div>
+    </div>
+
+    <div class="fail">
+        <p>FAIL</p>
+        <div class="exit"></div>
+        <div class="replay"></div>
+    </div>
+</body>
+
+</html>

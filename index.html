@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-app-capable" content="no">
+    <title>dragonball_index</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        body,
+        div,
+        img,
+        button {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            /* height: 100%; */
+            height: 100vh;
+        }
+
+        body {
+            background: #000;
+            overscroll-behavior:contain;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        img {
+            display: block;
+            margin: auto;
+            padding-top: 50px;
+            max-width: 640px;
+            height: auto;
+        }
+
+        .start {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 10%;
+            background: url("img/button.png") no-repeat;
+            width: 150px;
+            height: 60px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <img src="img/bg.png" alt="">
+        <button type="button" class="start"></button>
+    </div>
+    <script>
+        $(function () {
+            $(document).on('touchstart', function () { });
+            $('html,body').animate({ scrollTop: '3px' }, 300);
+            $('button').on('click', function () {
+                window.location.href = "game.html";
+            })
+        });
+    </script>
+</body>
+
+</html>
